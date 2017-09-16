@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Conditions:
+  BucketNameGenerated:
+    Fn::Equals:
+    - Ref: BucketName
+    - ''
+  CreateS3Bucket:
+    Fn::Equals:
+    - Ref: ShouldCreateBucket
+    - 'true'
+Description: An AWS Serverless Application that uses the ASP.NET Core framework running
+  in Amazon Lambda.
+Outputs:
+  S3ProxyBucket:
+    Value:
+      Fn::If:
+      - CreateS3Bucket
+      - Ref: Bucket
+      - Ref: BucketName
+Parameters:
+  BucketName:
+    Description: Name of S3 bucket that will be proxied. If left blank a new table
+      will be created.
+    MinLength: '0'
+    Type: String
+  ShouldCreateBucket:
+    AllowedValues:
+    - 'true'
+    - 'false'
+    Description: If true then the S3 bucket that will be proxied will be created with
+      the CloudFormation stack.
+    Type: String
+Resources:
+  Bucket:
+    Condition: CreateS3Bucket
+    Properties:
+      BucketName:
+        Fn::If:
+        - BucketNameGenerated
+        - Ref: AWS::NoValue
+        - Ref: BucketName
+    Type: AWS::S3::Bucket
+  Get:
+    Properties:
+      CodeUri: s3://vwfsuk.sam.lambda.deployments.eu-west-1/publish.zip
+      Environment:
+        Variables:
+          AppS3Bucket:
+            Fn::If:
+            - CreateS3Bucket
+            - Ref: Bucket
+            - Ref: BucketName
+      Events:
+        PutResource:
+          Properties:
+            Method: ANY
+            Path: /{proxy+}
+          Type: Api
+      Handler: AwsWebApiLambda::AwsWebApiLambda.LambdaEntryPoint::FunctionHandlerAsync
+      MemorySize: 256
+      Policies:
+      - AWSLambdaFullAccess
+      Role: null
+      Runtime: dotnetcore1.0
+      Timeout: 30
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
