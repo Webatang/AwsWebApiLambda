@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2AE87B3D-E14C-4DD9-A8CE-87CFF00534E5}"
 EndProject
@@ -10,6 +10,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwsWebApiLambda", "src\AwsWebApiLambda\AwsWebApiLambda.csproj", "{C79D6929-44B5-4CDE-9676-3CF7B6DF45A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwsWebApiLambda.Tests", "test\AwsWebApiLambda.Tests\AwsWebApiLambda.Tests.csproj", "{A3890B52-70F9-4741-8040-8E4A64FA2854}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{490F3E28-56F6-4FDA-B542-D552FDACD232}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.cake = build\build.cake
+		build\build.ps1 = build\build.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
